@@ -1,0 +1,17 @@
+# Python caches / build
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Runtime output — keep the folders (.gitkeep), ignore their contents
+logs/*
+screenshots/*
+reports/*
+!logs/.gitkeep
+!screenshots/.gitkeep
+!reports/.gitkeep

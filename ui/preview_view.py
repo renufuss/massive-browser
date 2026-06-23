@@ -133,7 +133,7 @@ class PreviewCard(QFrame):
         title_font.setBold(True)
         self._title.setFont(title_font)
 
-        self._subtitle = QLabel(f"{instance.engine.capitalize()} - {instance.profile_name}")
+        self._subtitle = QLabel(f"{instance.engine.capitalize()} - {instance.profile.name}")
         self._subtitle.setStyleSheet("color: palette(mid);")
         self._subtitle.setWordWrap(True)
 
@@ -230,6 +230,7 @@ class PreviewDialog(QDialog):
     """Enlarged single-browser preview with details and a refresh button."""
 
     refresh_requested = Signal(str)  # instance_id
+    show_window_requested = Signal(str)  # instance_id
 
     def __init__(self, instance: BrowserInstance, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -241,9 +242,9 @@ class PreviewDialog(QDialog):
 
         info = QLabel(
             f"<b>{instance.name}</b> &nbsp; | &nbsp; {instance.engine.capitalize()} &nbsp; | "
-            f"&nbsp; {instance.profile_name} &nbsp; | &nbsp; id {instance.instance_id} &nbsp; | "
-            f"&nbsp; {instance.config.viewport_width}x{instance.config.viewport_height} "
-            f"&nbsp; | &nbsp; {instance.config.locale} / {instance.config.timezone}"
+            f"&nbsp; {instance.profile.name} &nbsp; | &nbsp; id {instance.instance_id} &nbsp; | "
+            f"&nbsp; {instance.profile.viewport_width}x{instance.profile.viewport_height} "
+            f"&nbsp; | &nbsp; {instance.locale} / {instance.timezone}"
         )
         info.setTextFormat(Qt.TextFormat.RichText)
         info.setWordWrap(True)
@@ -260,10 +261,13 @@ class PreviewDialog(QDialog):
         scroll.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         buttons = QHBoxLayout()
+        show_btn = QPushButton("Show browser window")
         refresh_btn = QPushButton("Refresh")
         close_btn = QPushButton("Close")
+        show_btn.clicked.connect(lambda: self.show_window_requested.emit(self.instance_id))
         refresh_btn.clicked.connect(lambda: self.refresh_requested.emit(self.instance_id))
         close_btn.clicked.connect(self.accept)
+        buttons.addWidget(show_btn)
         buttons.addWidget(refresh_btn)
         buttons.addStretch(1)
         buttons.addWidget(close_btn)

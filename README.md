@@ -26,12 +26,17 @@ timezone, locale, language, colour-scheme and user-agent.
     live status.
   - **Grid (thumbnails)**: a wall of small live previews — ideal when you launch
     dozens or 100+ browsers. Tile size is adjustable (Small / Medium / Large),
-    and **clicking a tile opens an enlarged preview** with full details + refresh.
-    Works in headless mode too (previews come from `page.screenshot()`).
+    and **clicking a tile opens an enlarged preview** with full details, a
+    refresh button, and a **Show browser window** button that raises the real
+    (headful) browser window. Works in headless mode too (previews come from
+    `page.screenshot()`).
+- **Window control** (headful): **Minimize All** button minimises every browser
+  window; **Show browser window** raises a chosen one. Matched by each window's
+  unique title — Windows-only (no-op on other OSes; see `services/window_control.py`).
 - **Concurrent launch**: browsers start in parallel (the *Delay* only staggers
   the starts; set it to `0` to fire them all at once).
-- Buttons: **START**, **STOP ALL**, **Open Log Folder**, **Export Report**,
-  **Take Screenshot All**.
+- Buttons: **START**, **STOP ALL**, **Take Screenshot All**, **Minimize All**,
+  **Open Log Folder**, **Export Report**.
 - **Screenshots** of every browser saved to `screenshots/browser_001.png`, …
 - **CSV report** export: `instance_id, instance_name, browser_engine,
   device_profile, start_time, status`.
@@ -127,7 +132,7 @@ project/
 │   └── styles.py                # Shared status->colour helper
 │
 ├── browser/
-│   ├── models.py                # RandomConfig + BrowserInstance dataclasses
+│   ├── models.py                # BrowserInstance dataclass
 │   ├── device_profiles.py       # 60+ DeviceProfile entries + random pools
 │   ├── browser_factory.py       # Builds instances + Playwright context options
 │   └── browser_manager.py       # Async orchestrator (launch/screenshot/stop)
@@ -135,6 +140,7 @@ project/
 ├── services/
 │   ├── logger.py                # Thread-safe file + signal logger
 │   ├── async_runner.py          # Background asyncio loop (GUI<->async bridge)
+│   ├── window_control.py        # OS window minimise/raise by title (Windows)
 │   └── report_exporter.py       # CSV report writer
 │
 ├── config/
@@ -172,8 +178,8 @@ connection, which is what makes UI updates thread-safe.
 |-------|------|----------------|
 | `RunConfig` | `config/settings.py` | Immutable value object describing one START run (url, count, headless, delay, auto-close, timeout). |
 | `DeviceProfile` | `browser/device_profiles.py` | One immutable fingerprint: name, category, user-agent, viewport, screen, scale factor, mobile/touch flags, platform. The module also exposes `PROFILES` (60+) and the `LOCALES` / `TIMEZONES` / `COLOR_SCHEMES` random pools. |
-| `RandomConfig` | `browser/models.py` | The concrete randomised configuration applied to one context (viewport, screen, UA, platform, locale, language, timezone, colour-scheme, scale/touch/mobile). |
-| `BrowserInstance` | `browser/models.py` | Runtime state of one browser: identity (index, id, name), engine, profile name, status, start time, error, plus the live Playwright `browser`/`context`/`page` handles. |
+| `BrowserInstance` | `browser/models.py` | Runtime state of one browser: identity (index, id, name), engine, the chosen `DeviceProfile`, the four random picks (locale, accept-language, timezone, colour-scheme), status, start time, error, plus the live Playwright `browser`/`context`/`page` handles. |
+| `DeviceProfile` + `PROFILES` | `browser/device_profiles.py` | One immutable device fingerprint (viewport, screen, UA, platform, scale, touch/mobile) and the 60+ catalogue, plus the `LOCALES`/`TIMEZONES`/`COLOR_SCHEMES` random pools. |
 | `BrowserFactory` | `browser/browser_factory.py` | Per-run factory. `create_instance()` picks a random engine/profile/locale/timezone/colour-scheme and builds a `BrowserInstance`; `build_context_options()` translates it into **engine-aware** `new_context` kwargs; `build_init_script()` aligns `navigator.platform`/`languages`. |
 | `BrowserManager` | `browser/browser_manager.py` | Async orchestrator and the single owner of the Playwright runtime. `launch_all()` opens browsers sequentially (honouring the delay), `screenshot_all()` captures every page, `stop_all()` tears everything down, and an internal timer powers auto-close. Emits Qt signals (`instance_registered`, `instance_status`, `run_started`, `launch_complete`, `all_stopped`) so the GUI can react. Catches every failure mode (missing Playwright, launch failure, timeout, crash). |
 | `LogService` | `services/logger.py` | Thread-safe logger. Each `log()` writes a timestamped line to `logs/session_*.log` (lock-guarded) **and** emits `message_logged` for the live panel. |

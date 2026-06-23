@@ -158,6 +158,7 @@ class MainWindow(QMainWindow):
         self._start_btn = QPushButton("START")
         self._stop_btn = QPushButton("STOP ALL")
         self._screenshot_btn = QPushButton("Take Screenshot All")
+        self._minimize_btn = QPushButton("Minimize All")
         self._log_folder_btn = QPushButton("Open Log Folder")
         self._export_btn = QPushButton("Export Report")
 
@@ -167,11 +168,13 @@ class MainWindow(QMainWindow):
 
         self._stop_btn.setEnabled(False)
         self._screenshot_btn.setEnabled(False)
+        self._minimize_btn.setEnabled(False)
 
         for btn in (
             self._start_btn,
             self._stop_btn,
             self._screenshot_btn,
+            self._minimize_btn,
             self._log_folder_btn,
             self._export_btn,
         ):
@@ -181,6 +184,7 @@ class MainWindow(QMainWindow):
         self._start_btn.clicked.connect(self._on_start)
         self._stop_btn.clicked.connect(self._on_stop)
         self._screenshot_btn.clicked.connect(self._on_screenshot)
+        self._minimize_btn.clicked.connect(self._on_minimize_all)
         self._log_folder_btn.clicked.connect(lambda: self._open_folder(LOGS_DIR))
         self._export_btn.clicked.connect(self._on_export)
         return bar
@@ -298,6 +302,9 @@ class MainWindow(QMainWindow):
     def _on_screenshot(self) -> None:
         self._runner.submit(self._manager.screenshot_all())
 
+    def _on_minimize_all(self) -> None:
+        self._runner.submit(self._manager.minimize_all())
+
     def _on_export(self) -> None:
         instances = self._manager.snapshot()
         if not instances:
@@ -336,7 +343,7 @@ class MainWindow(QMainWindow):
         self._set_cell(row, 0, str(instance.index))
         self._set_cell(row, 1, instance.name)
         self._set_cell(row, 2, instance.engine.capitalize())
-        self._set_cell(row, 3, instance.profile_name)
+        self._set_cell(row, 3, instance.profile.name)
         self._set_status_cell(row, instance.status)
         self._grid.add_card(instance)
 
@@ -382,6 +389,7 @@ class MainWindow(QMainWindow):
         self._start_btn.setEnabled(not running)
         self._stop_btn.setEnabled(running)
         self._screenshot_btn.setEnabled(running)
+        self._minimize_btn.setEnabled(running)
         for widget in (
             self._url_edit,
             self._count_spin,
@@ -488,6 +496,9 @@ class MainWindow(QMainWindow):
         self._preview_dialog = dialog
         dialog.refresh_requested.connect(
             lambda iid: self._runner.submit(self._manager.capture_single_preview(iid))
+        )
+        dialog.show_window_requested.connect(
+            lambda iid: self._runner.submit(self._manager.show_window(iid))
         )
         dialog.finished.connect(self._on_dialog_finished)
         cached = self._preview_cache.get(instance_id)

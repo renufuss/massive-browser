@@ -21,6 +21,7 @@ from PySide6.QtCore import QObject, Signal
 from browser.browser_factory import BrowserFactory
 from browser.models import BrowserInstance
 from config.settings import NAME_PREFIXES, SCREENSHOTS_DIR, RunConfig
+from services import window_control
 from services.logger import LogService
 
 # --------------------------------------------------------------------------- #
@@ -184,7 +185,7 @@ class BrowserManager(QObject):
 
             instance.start_time = datetime.now().isoformat(timespec="seconds")
             self._update(instance, "Launched")
-            self._log(f"{instance.name} launched  ({instance.engine} - {instance.profile_name})")
+            self._log(f"{instance.name} launched  ({instance.engine} - {instance.profile.name})")
         except Exception as exc:  # noqa: BLE001
             self._fail(instance, "Context Error", f"failed to create context: {exc}")
             return False
@@ -256,6 +257,61 @@ class BrowserManager(QObject):
             self.preview_captured.emit(instance.instance_id, data)
         except Exception as exc:  # noqa: BLE001
             self._log(f"{instance.name} preview capture failed: {exc}")
+
+    # ------------------------------------------------------------------ #
+    # OS window control (headful only; matched by the unique window title)
+    # ------------------------------------------------------------------ #
+    # A site's JS often rewrites its <title> after load, so the OS window caption
+    # drifts away from our unique name. We re-assert the name at action time, then
+    # poll briefly while the OS caption catches up.
+    # ponytail: ~0.2s propagation knob; a site that rewrites its title on a faster
+    #           timer than this can still dodge the match.
+    _WINDOW_SETTLE_S = 0.2
+    _WINDOW_TRIES = 4
+
+    async def _reassert_title(self, inst: BrowserInstance) -> None:
+        try:
+            await self._apply_window_title(inst.page, inst.name)
+        except Exception:  # noqa: BLE001
+            pass
+
+    async def show_window(self, instance_id: str) -> None:
+        """Bring one browser's real window to the front."""
+        inst = self._instances.get(instance_id)
+        if inst is None:
+            return
+        if inst.page is None:
+            self._log(f"{inst.name}: no window to show (status: {inst.status})")
+            return
+        try:
+            await inst.page.bring_to_front()
+        except Exception as exc:  # noqa: BLE001
+            self._log(f"{inst.name} show window failed: {exc}")
+            return
+        await self._reassert_title(inst)
+        for _ in range(self._WINDOW_TRIES):
+            await asyncio.sleep(self._WINDOW_SETTLE_S)
+            if window_control.restore(inst.name):
+                self._log(f"{inst.name} window brought to front")
+                return
+        self._log(f"{inst.name} no OS window matched (headless or unsupported OS)")
+
+    async def minimize_all(self) -> None:
+        """Minimise every open browser window."""
+        targets = [inst for inst in self._instances.values() if inst.page is not None]
+        if not targets:
+            self._log("No windows to minimize.")
+            return
+        for inst in targets:
+            await self._reassert_title(inst)
+        remaining = {inst.name for inst in targets}
+        for _ in range(self._WINDOW_TRIES):
+            await asyncio.sleep(self._WINDOW_SETTLE_S)
+            remaining = {name for name in remaining if not window_control.minimize(name)}
+            if not remaining:
+                break
+        done = len(targets) - len(remaining)
+        self._log(f"Minimized {done}/{len(targets)} window(s).")
 
     # ------------------------------------------------------------------ #
     # Stop / cleanup
