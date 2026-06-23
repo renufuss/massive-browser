@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from browser.device_profiles import DeviceProfile
+from browser.engines import Engine
 
 
 @dataclass(slots=True)
@@ -19,7 +20,7 @@ class BrowserInstance:
     index: int
     instance_id: str
     name: str
-    engine: str
+    engine: Engine
     profile: DeviceProfile
     locale: str
     accept_language: str

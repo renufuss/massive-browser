@@ -3,7 +3,7 @@
 ; Build:  iscc packaging\installer.iss   (after pyinstaller)
 
 #define AppName "Multi Browser Launcher"
-#define AppVersion "1.0.0"
+#define AppVersion "1.1.0"
 #define AppExe "MultiBrowserLauncher.exe"
 
 [Setup]

@@ -12,19 +12,23 @@ import random
 import uuid
 
 from browser.device_profiles import COLOR_SCHEMES, LOCALES, PROFILES, TIMEZONES
+from browser.engines import Engine
 from browser.models import BrowserInstance
-from config.settings import ENGINES
 
 
 class BrowserFactory:
     """Builds :class:`BrowserInstance` objects and their context options.
 
     One factory per run, with a single randomly-chosen name prefix so every
-    instance shares a coherent name series (e.g. ``Monitor-001`` ...).
+    instance shares a coherent name series (e.g. ``Monitor-001`` ...), drawing
+    engines from the pool of browsers actually available on this machine.
     """
 
-    def __init__(self, name_prefix: str, rng: random.Random | None = None) -> None:
+    def __init__(
+        self, name_prefix: str, engines: list[Engine], rng: random.Random | None = None
+    ) -> None:
         self._prefix = name_prefix
+        self._engines = engines
         self._rng = rng or random.Random()
 
     def create_instance(self, index: int) -> BrowserInstance:
@@ -34,7 +38,7 @@ class BrowserFactory:
             index=index,
             instance_id=uuid.uuid4().hex[:8],
             name=f"{self._prefix}-{index:03d}",
-            engine=self._rng.choice(ENGINES),
+            engine=self._rng.choice(self._engines),
             profile=self._rng.choice(PROFILES),
             locale=locale,
             accept_language=accept_language,
@@ -58,10 +62,11 @@ class BrowserFactory:
             "color_scheme": instance.color_scheme,
             "extra_http_headers": {"Accept-Language": instance.accept_language},
         }
-        if instance.engine in ("chromium", "webkit"):
+        browser_type = instance.engine.browser_type
+        if browser_type in ("chromium", "webkit"):
             options["device_scale_factor"] = p.device_scale_factor
             options["has_touch"] = p.has_touch
-        if instance.engine == "chromium":
+        if browser_type == "chromium":
             options["is_mobile"] = p.is_mobile
         return options
 

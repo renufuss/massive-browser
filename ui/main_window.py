@@ -81,7 +81,7 @@ class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         ensure_directories()
-        self.setWindowTitle(APP_NAME)
+        self.setWindowTitle(f"{APP_NAME}  v{APP_VERSION}  —  Renufus")
         self.resize(1040, 760)
         icon = resource_path("assets/icon.ico")
         if icon.exists():
@@ -354,7 +354,7 @@ class MainWindow(QMainWindow):
         self._row_for_id[instance.instance_id] = row
         self._set_cell(row, 0, str(instance.index))
         self._set_cell(row, 1, instance.name)
-        self._set_cell(row, 2, instance.engine.capitalize())
+        self._set_cell(row, 2, instance.engine.name)
         self._set_cell(row, 3, instance.profile.name)
         self._set_status_cell(row, instance.status)
         self._grid.add_card(instance)

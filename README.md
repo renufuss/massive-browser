@@ -5,10 +5,16 @@ website **testing, QA, monitoring and cross-browser/compatibility** work.
 
 Built with **Python 3.12**, **Playwright (async)** and **PySide6**.
 
-Each launched browser gets a *randomly chosen engine* (Chromium / Firefox /
-WebKit), a *randomly chosen device profile* (60+ desktop, mobile and tablet
-fingerprints) and an *isolated browser context* — its own viewport, screen size,
-timezone, locale, language, colour-scheme and user-agent.
+Each launched browser gets a *randomly chosen engine*, a *randomly chosen device
+profile* (60+ desktop, mobile and tablet fingerprints) and an *isolated browser
+context* — its own viewport, screen size, timezone, locale, language,
+colour-scheme and user-agent.
+
+The engine pool is **Chromium, Firefox, WebKit** (bundled, always available) plus
+any branded Chromium browser detected on the machine — **Edge, Chrome, Opera,
+Brave, Vivaldi** — launched via Playwright's `channel` or the browser's
+executable. Browsers that aren't installed are simply left out of the pool (see
+`browser/engines.py`); Edge ships with Windows, so it's almost always in the mix.
 
 ---
 
@@ -54,8 +60,8 @@ desktop. Python, Playwright and all three browser engines are bundled — nothin
 else to install:
 
 - **`MultiBrowserLauncher-Setup.exe`** — Inno Setup installer (per-user).
-- **`Multi Browser Launcher-1.0.0-win64.msi`** — MSI (per-user), for managed/
-  silent deployment: `msiexec /i "Multi Browser Launcher-1.0.0-win64.msi" /qn`.
+- **`Multi Browser Launcher-1.1.0-win64.msi`** — MSI (per-user), for managed/
+  silent deployment: `msiexec /i "Multi Browser Launcher-1.1.0-win64.msi" /qn`.
 
 ## Build the installers yourself
 
@@ -207,6 +213,7 @@ connection, which is what makes UI updates thread-safe.
 | `DeviceProfile` | `browser/device_profiles.py` | One immutable fingerprint: name, category, user-agent, viewport, screen, scale factor, mobile/touch flags, platform. The module also exposes `PROFILES` (60+) and the `LOCALES` / `TIMEZONES` / `COLOR_SCHEMES` random pools. |
 | `BrowserInstance` | `browser/models.py` | Runtime state of one browser: identity (index, id, name), engine, the chosen `DeviceProfile`, the four random picks (locale, accept-language, timezone, colour-scheme), status, start time, error, plus the live Playwright `browser`/`context`/`page` handles. |
 | `DeviceProfile` + `PROFILES` | `browser/device_profiles.py` | One immutable device fingerprint (viewport, screen, UA, platform, scale, touch/mobile) and the 60+ catalogue, plus the `LOCALES`/`TIMEZONES`/`COLOR_SCHEMES` random pools. |
+| `Engine` + `available_engines()` | `browser/engines.py` | Describes a launchable browser (Playwright type + optional `channel`/`executable`) and detects which branded browsers (Edge/Chrome/Opera/Brave/Vivaldi) are installed, on top of the three bundled engines. |
 | `BrowserFactory` | `browser/browser_factory.py` | Per-run factory. `create_instance()` picks a random engine/profile/locale/timezone/colour-scheme and builds a `BrowserInstance`; `build_context_options()` translates it into **engine-aware** `new_context` kwargs; `build_init_script()` aligns `navigator.platform`/`languages`. |
 | `BrowserManager` | `browser/browser_manager.py` | Async orchestrator and the single owner of the Playwright runtime. `launch_all()` opens browsers sequentially (honouring the delay), `screenshot_all()` captures every page, `stop_all()` tears everything down, and an internal timer powers auto-close. Emits Qt signals (`instance_registered`, `instance_status`, `run_started`, `launch_complete`, `all_stopped`) so the GUI can react. Catches every failure mode (missing Playwright, launch failure, timeout, crash). |
 | `LogService` | `services/logger.py` | Thread-safe logger. Each `log()` writes a timestamped line to `logs/session_*.log` (lock-guarded) **and** emits `message_logged` for the live panel. |

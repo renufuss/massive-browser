@@ -38,7 +38,7 @@ class ReportExporter:
                     {
                         "instance_id": inst.instance_id,
                         "instance_name": inst.name,
-                        "browser_engine": inst.engine,
+                        "browser_engine": inst.engine.name,
                         "device_profile": inst.profile.name,
                         "start_time": inst.start_time,
                         "status": inst.status,

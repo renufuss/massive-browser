@@ -133,7 +133,7 @@ class PreviewCard(QFrame):
         title_font.setBold(True)
         self._title.setFont(title_font)
 
-        self._subtitle = QLabel(f"{instance.engine.capitalize()} - {instance.profile.name}")
+        self._subtitle = QLabel(f"{instance.engine.name} - {instance.profile.name}")
         self._subtitle.setStyleSheet("color: palette(mid);")
         self._subtitle.setWordWrap(True)
 
@@ -241,7 +241,7 @@ class PreviewDialog(QDialog):
         layout = QVBoxLayout(self)
 
         info = QLabel(
-            f"<b>{instance.name}</b> &nbsp; | &nbsp; {instance.engine.capitalize()} &nbsp; | "
+            f"<b>{instance.name}</b> &nbsp; | &nbsp; {instance.engine.name} &nbsp; | "
             f"&nbsp; {instance.profile.name} &nbsp; | &nbsp; id {instance.instance_id} &nbsp; | "
             f"&nbsp; {instance.profile.viewport_width}x{instance.profile.viewport_height} "
             f"&nbsp; | &nbsp; {instance.locale} / {instance.timezone}"

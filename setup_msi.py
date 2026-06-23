@@ -11,6 +11,8 @@ import os
 
 from cx_Freeze import Executable, setup
 
+from config.settings import APP_VERSION  # single source of truth for the version
+
 _cache = os.path.expandvars(r"%LOCALAPPDATA%\ms-playwright")
 
 build_exe_options = {
@@ -31,7 +33,7 @@ bdist_msi_options = {
 
 setup(
     name="Multi Browser Launcher",
-    version="1.0.0",
+    version=APP_VERSION,
     author="Renufus",
     description="Multi Browser Launcher - open many browsers at once",
     options={"build_exe": build_exe_options, "bdist_msi": bdist_msi_options},

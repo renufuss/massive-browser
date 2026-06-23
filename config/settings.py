@@ -14,7 +14,7 @@ from pathlib import Path
 # Identity
 # --------------------------------------------------------------------------- #
 APP_NAME = "Multi Browser Launcher"
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.1.0"
 COPYRIGHT = "© 2026 Renufus"
 
 # --------------------------------------------------------------------------- #
@@ -41,8 +41,7 @@ def resource_path(rel: str) -> Path:
 # --------------------------------------------------------------------------- #
 # Domain constants
 # --------------------------------------------------------------------------- #
-# Playwright engines the launcher will randomly choose from.
-ENGINES: tuple[str, ...] = ("chromium", "firefox", "webkit")
+# (Engines now live in browser/engines.py — detected per machine.)
 
 # Instance-name prefixes; one is chosen at random per run so that every
 # launched browser is named e.g. "Browser-001", "QA-Test-001" or "Monitor-001".

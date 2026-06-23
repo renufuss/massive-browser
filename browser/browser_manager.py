@@ -19,6 +19,7 @@ from typing import Optional
 from PySide6.QtCore import QObject, Signal
 
 from browser.browser_factory import BrowserFactory
+from browser.engines import available_engines
 from browser.models import BrowserInstance
 from config.settings import NAME_PREFIXES, SCREENSHOTS_DIR, RunConfig
 from services import window_control
@@ -103,12 +104,14 @@ class BrowserManager(QObject):
         self._instances.clear()
 
         prefix = random.choice(NAME_PREFIXES)
-        factory = BrowserFactory(prefix)
+        engines = available_engines()
+        factory = BrowserFactory(prefix, engines)
         self.run_started.emit(config.count)
         self._log(
             f"START - {config.count} browser(s) | name series '{prefix}-NNN' | "
             f"headless={config.headless} | delay={config.delay_seconds}s | url={config.url}"
         )
+        self._log("Engine pool: " + ", ".join(e.name for e in engines))
 
         try:
             self._pw = await async_playwright().start()
@@ -163,13 +166,18 @@ class BrowserManager(QObject):
         """Launch a single browser+context+page. Returns True if it stays open."""
         if self._stopping:
             return False
-        # 1) Launch the engine process.
+        # 1) Launch the engine process (branded browsers via channel/executable).
         try:
-            engine = getattr(self._pw, instance.engine)
-            browser = await engine.launch(headless=config.headless)
+            eng = instance.engine
+            launch_kwargs: dict = {"headless": config.headless}
+            if eng.channel:
+                launch_kwargs["channel"] = eng.channel
+            if eng.executable:
+                launch_kwargs["executable_path"] = eng.executable
+            browser = await getattr(self._pw, eng.browser_type).launch(**launch_kwargs)
             instance.browser = browser
         except Exception as exc:  # noqa: BLE001
-            self._fail(instance, "Launch Failed", f"failed to launch {instance.engine}: {exc}")
+            self._fail(instance, "Launch Failed", f"failed to launch {instance.engine.name}: {exc}")
             if "Executable doesn't exist" in str(exc) or "playwright install" in str(exc).lower():
                 self._log("Hint: run `python -m playwright install` to download browser binaries.")
             return False
@@ -185,7 +193,7 @@ class BrowserManager(QObject):
 
             instance.start_time = datetime.now().isoformat(timespec="seconds")
             self._update(instance, "Launched")
-            self._log(f"{instance.name} launched  ({instance.engine} - {instance.profile.name})")
+            self._log(f"{instance.name} launched  ({instance.engine.name} - {instance.profile.name})")
         except Exception as exc:  # noqa: BLE001
             self._fail(instance, "Context Error", f"failed to create context: {exc}")
             return False
