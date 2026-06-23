@@ -1,0 +1,14 @@
+[23:32:25] START - 5 browser(s) | name series 'QA-Test-NNN' | headless=True | delay=0.0s | url=data:text/html,<title>seed</title><h1>concurrent</h1>
+[23:32:25] QA-Test-001 launched  (chromium - Google Pixel 6)
+[23:32:25] QA-Test-003 launched  (chromium - Google Pixel Fold)
+[23:32:25] QA-Test-002 launched  (chromium - Motorola Edge 50)
+[23:32:25] QA-Test-001 loaded page
+[23:32:25] QA-Test-002 loaded page
+[23:32:25] QA-Test-003 loaded page
+[23:32:25] QA-Test-005 launched  (chromium - Oppo Find X7)
+[23:32:25] QA-Test-004 launched  (chromium - Samsung Galaxy S24)
+[23:32:25] QA-Test-005 loaded page
+[23:32:25] QA-Test-004 loaded page
+[23:32:25] Launch sequence complete - 5/5 browser(s) active.
+[23:32:25] Stopping all browsers...
+[23:32:26] All browsers stopped.

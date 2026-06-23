@@ -1,0 +1,68 @@
+[23:33:24] Application started. Ready.
+[23:33:45] START - 20 browser(s) | name series 'QA-Test-NNN' | headless=False | delay=0.5s | url=https://rte.co.id
+[23:33:45] QA-Test-001 launched  (chromium - Samsung Galaxy S24 Ultra)
+[23:33:46] QA-Test-002 launched  (chromium - Google Pixel 8)
+[23:33:46] QA-Test-001 loaded page
+[23:33:46] QA-Test-002 loaded page
+[23:33:47] QA-Test-004 launched  (chromium - Oppo Find X7)
+[23:33:47] QA-Test-004 loaded page
+[23:33:49] QA-Test-003 launched  (firefox - iPad Pro 11")
+[23:33:50] QA-Test-009 launched  (chromium - Samsung Galaxy A55)
+[23:33:50] QA-Test-005 launched  (firefox - iPad 10th Gen)
+[23:33:51] QA-Test-011 launched  (webkit - iPad Pro 11")
+[23:33:52] QA-Test-012 launched  (chromium - iPad 10th Gen)
+[23:33:52] QA-Test-006 launched  (firefox - Samsung Galaxy A35)
+[23:33:52] QA-Test-009 loaded page
+[23:33:52] QA-Test-013 launched  (chromium - Google Pixel 8)
+[23:33:53] QA-Test-005 loaded page
+[23:33:53] QA-Test-012 loaded page
+[23:33:53] QA-Test-011 loaded page
+[23:33:54] QA-Test-013 loaded page
+[23:33:54] QA-Test-008 launched  (firefox - Chromebook - Chrome HD)
+[23:33:54] QA-Test-017 launched  (chromium - iPhone 15 Pro Max)
+[23:33:54] QA-Test-003 loaded page
+[23:33:55] QA-Test-017 loaded page
+[23:33:56] QA-Test-020 launched  (webkit - Samsung Galaxy S23)
+[23:33:56] QA-Test-006 loaded page
+[23:33:57] QA-Test-007 launched  (firefox - Windows 11 - Chrome QHD)
+[23:33:58] QA-Test-008 loaded page
+[23:34:00] QA-Test-010 launched  (firefox - Samsung Galaxy Z Flip5)
+[23:34:00] QA-Test-014 launched  (firefox - Windows 11 - Chrome Laptop)
+[23:34:01] QA-Test-007 loaded page
+[23:34:02] QA-Test-015 launched  (firefox - iPhone 15 Pro Max)
+[23:34:03] QA-Test-019 launched  (firefox - Windows 11 - Firefox WUXGA)
+[23:34:03] QA-Test-018 launched  (firefox - Vivo X100)
+[23:34:04] QA-Test-016 launched  (firefox - Samsung Galaxy S22)
+[23:34:05] QA-Test-019 loaded page
+[23:34:06] QA-Test-010 loaded page
+[23:34:06] QA-Test-018 loaded page
+[23:34:06] QA-Test-016 loaded page
+[23:34:08] QA-Test-015 loaded page
+[23:34:15] QA-Test-014 loaded page
+[23:34:25] QA-Test-020 loaded page
+[23:34:25] Launch sequence complete - 20/20 browser(s) active.
+[23:34:45] Capturing screenshots for 20 browser(s)...
+[23:34:46] QA-Test-001 screenshot saved -> browser_001.png
+[23:34:46] QA-Test-002 screenshot saved -> browser_002.png
+[23:34:47] QA-Test-003 screenshot saved -> browser_003.png
+[23:34:48] QA-Test-004 screenshot saved -> browser_004.png
+[23:34:48] QA-Test-005 screenshot saved -> browser_005.png
+[23:34:48] QA-Test-006 screenshot saved -> browser_006.png
+[23:34:48] QA-Test-007 screenshot saved -> browser_007.png
+[23:34:48] QA-Test-008 screenshot saved -> browser_008.png
+[23:34:49] QA-Test-009 screenshot saved -> browser_009.png
+[23:34:49] QA-Test-010 screenshot saved -> browser_010.png
+[23:34:50] QA-Test-011 screenshot saved -> browser_011.png
+[23:34:51] QA-Test-012 screenshot saved -> browser_012.png
+[23:34:51] QA-Test-013 screenshot saved -> browser_013.png
+[23:34:52] QA-Test-014 screenshot saved -> browser_014.png
+[23:34:52] QA-Test-015 screenshot saved -> browser_015.png
+[23:34:52] QA-Test-016 screenshot saved -> browser_016.png
+[23:34:53] QA-Test-017 screenshot saved -> browser_017.png
+[23:34:53] QA-Test-018 screenshot saved -> browser_018.png
+[23:34:53] QA-Test-019 screenshot saved -> browser_019.png
+[23:34:53] QA-Test-020 screenshot saved -> browser_020.png
+[23:34:53] Screenshot batch complete - 20/20 saved.
+[23:35:27] STOP ALL requested.
+[23:35:27] Stopping all browsers...
+[23:35:32] All browsers stopped.

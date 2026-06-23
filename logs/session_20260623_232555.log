@@ -1,0 +1,43 @@
+[23:25:55] Application started. Ready.
+[23:26:23] START - 20 browser(s) | name series 'QA-Test-NNN' | headless=False | url=https://rte.co.id
+[23:26:25] QA-Test-001 launched  (firefox - Google Pixel 8 Pro)
+[23:26:28] QA-Test-001 loaded page
+[23:26:30] QA-Test-002 launched  (webkit - iPhone SE (2022))
+[23:26:34] QA-Test-002 loaded page
+[23:26:36] QA-Test-003 launched  (webkit - Samsung Galaxy Z Fold5)
+[23:27:05] STOP ALL requested.
+[23:27:05] Stopping all browsers...
+[23:27:05] QA-Test-003 failed to load page: Page.goto: Target page, context or browser has been closed
+Call log:
+  - navigating to "https://rte.co.id/", waiting until "load"
+
+[23:27:05] Stop requested - halting further launches.
+[23:27:05] Launch sequence complete - 3/20 browser(s) active.
+[23:27:05] All browsers stopped.
+[23:27:11] START - 20 browser(s) | name series 'Monitor-NNN' | headless=False | url=https://rte.co.id
+[23:27:12] Monitor-001 launched  (firefox - Xiaomi Redmi Note 13)
+[23:27:19] Monitor-001 loaded page
+[23:27:19] Monitor-002 launched  (webkit - Xiaomi 14)
+[23:27:21] Monitor-002 loaded page
+[23:27:29] Monitor-003 launched  (chromium - iPhone 15 Pro Max)
+[23:27:30] Monitor-003 loaded page
+[23:27:31] Monitor-004 launched  (chromium - Windows 11 - Chrome HD+)
+[23:27:31] Monitor-004 loaded page
+[23:27:31] Monitor-005 launched  (webkit - Linux - Firefox HiDPI QHD)
+[23:27:33] Monitor-005 loaded page
+[23:27:33] Monitor-006 launched  (webkit - Huawei P60)
+[23:27:38] Monitor-006 loaded page
+[23:27:38] Monitor-007 launched  (chromium - Samsung Galaxy Z Flip5)
+[23:27:39] Monitor-007 loaded page
+[23:27:39] Monitor-008 launched  (chromium - macOS - Chrome MacBook Air)
+[23:27:40] Monitor-008 loaded page
+[23:27:40] Monitor-009 launched  (webkit - macOS - Safari MacBook Pro 16)
+[23:28:02] STOP ALL requested.
+[23:28:02] Stopping all browsers...
+[23:28:03] Monitor-009 failed to load page: Page.goto: Target page, context or browser has been closed
+Call log:
+  - navigating to "https://rte.co.id/", waiting until "load"
+
+[23:28:03] Stop requested - halting further launches.
+[23:28:03] Launch sequence complete - 9/20 browser(s) active.
+[23:28:04] All browsers stopped.

@@ -1,0 +1,46 @@
+[23:54:46] Application started. Ready.
+[23:55:08] START - 20 browser(s) | name series 'QA-Test-NNN' | headless=False | delay=1.0s | url=https://rte.co.id
+[23:55:10] QA-Test-001 launched  (firefox - Samsung Galaxy Z Fold5)
+[23:55:11] QA-Test-003 launched  (webkit - iPad Air)
+[23:55:11] QA-Test-002 launched  (firefox - iPhone 13)
+[23:55:11] QA-Test-004 launched  (webkit - macOS - Firefox 14")
+[23:55:12] QA-Test-001 loaded page
+[23:55:13] QA-Test-005 launched  (chromium - iPhone 11)
+[23:55:13] QA-Test-002 loaded page
+[23:55:13] QA-Test-003 loaded page
+[23:55:13] QA-Test-004 loaded page
+[23:55:15] QA-Test-007 launched  (chromium - iPhone 14 Pro)
+[23:55:15] QA-Test-007 loaded page
+[23:55:16] QA-Test-006 launched  (firefox - Windows 11 - Chrome QHD)
+[23:55:17] QA-Test-005 loaded page
+[23:55:18] QA-Test-010 launched  (chromium - Linux - Chrome FHD)
+[23:55:18] QA-Test-008 launched  (firefox - Windows 11 - Chrome 4K)
+[23:55:19] QA-Test-011 launched  (chromium - Linux - Chrome SXGA)
+[23:55:19] QA-Test-011 loaded page
+[23:55:20] QA-Test-012 launched  (chromium - Samsung Galaxy Z Fold5)
+[23:55:20] QA-Test-009 launched  (firefox - iPhone 15 Pro Max)
+[23:55:20] QA-Test-010 loaded page
+[23:55:22] QA-Test-006 loaded page
+[23:55:23] QA-Test-015 launched  (chromium - Google Pixel 8 Pro)
+[23:55:24] QA-Test-015 loaded page
+[23:55:24] QA-Test-013 launched  (firefox - Windows 11 - Chrome HD+)
+[23:55:24] QA-Test-009 loaded page
+[23:55:25] QA-Test-012 loaded page
+[23:55:25] QA-Test-017 launched  (webkit - iPad Pro 12.9")
+[23:55:26] QA-Test-013 loaded page
+[23:55:26] QA-Test-018 launched  (chromium - iPhone 13 mini)
+[23:55:26] QA-Test-014 launched  (firefox - iPad Pro 12.9")
+[23:55:27] QA-Test-019 launched  (chromium - Chromebook - Chrome HD)
+[23:55:28] QA-Test-019 loaded page
+[23:55:28] QA-Test-016 launched  (firefox - Windows 11 - Edge FHD)
+[23:55:28] QA-Test-008 loaded page
+[23:55:30] QA-Test-014 loaded page
+[23:55:30] QA-Test-018 loaded page
+[23:55:31] QA-Test-020 launched  (firefox - Windows 11 - Edge FHD)
+[23:55:32] QA-Test-017 loaded page
+[23:55:33] QA-Test-020 loaded page
+[23:55:37] QA-Test-016 loaded page
+[23:55:37] Launch sequence complete - 20/20 browser(s) active.
+[23:56:35] STOP ALL requested.
+[23:56:35] Stopping all browsers...
+[23:56:40] All browsers stopped.
