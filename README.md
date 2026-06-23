@@ -47,7 +47,34 @@ timezone, locale, language, colour-scheme and user-agent.
 
 ---
 
-## Installation
+## Install (end users — no Python needed)
+
+Run either installer, then launch *Multi Browser Launcher* from the Start menu /
+desktop. Python, Playwright and all three browser engines are bundled — nothing
+else to install:
+
+- **`MultiBrowserLauncher-Setup.exe`** — Inno Setup installer (per-user).
+- **`Multi Browser Launcher-1.0.0-win64.msi`** — MSI (per-user), for managed/
+  silent deployment: `msiexec /i "Multi Browser Launcher-1.0.0-win64.msi" /qn`.
+
+## Build the installers yourself
+
+From a checkout with the dev setup below (and Playwright browsers installed):
+
+```bash
+packaging\build.bat
+```
+
+This generates the icon, bundles everything with **PyInstaller** (onedir), then
+produces both installers into `dist\`:
+
+- the `.exe` via [Inno Setup](https://jrsoftware.org) (skipped if `iscc` isn't on PATH);
+- the `.msi` via **cx_Freeze** (`python setup_msi.py bdist_msi`, no extra tools).
+
+Sanity-check a frozen build with `MultiBrowserLauncher.exe --selftest` (launches a
+bundled browser headless and writes `%TEMP%\mbl_selftest.txt`).
+
+## Installation (development)
 
 Requires **Python 3.12+**.
 
@@ -214,3 +241,7 @@ connection, which is what makes UI updates thread-safe.
 | `Executable doesn't exist` / launch fails | `python -m playwright install` |
 | Status shows `Timeout` | Site slow/unreachable — the browser stays open; raise `DEFAULT_TIMEOUT_MS` in `config/settings.py` if needed. |
 | Status shows `Crashed` | The page crashed (e.g. heavy site under many concurrent browsers); reduce the count. |
+
+---
+
+© 2026 Renufus — Multi Browser Launcher.

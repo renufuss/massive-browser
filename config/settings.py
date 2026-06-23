@@ -6,16 +6,37 @@ the codebase free of magic strings and easy to test (Single Responsibility).
 
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 # --------------------------------------------------------------------------- #
+# Identity
+# --------------------------------------------------------------------------- #
+APP_NAME = "Multi Browser Launcher"
+APP_VERSION = "1.0.0"
+COPYRIGHT = "© 2026 Renufus"
+
+# --------------------------------------------------------------------------- #
 # Filesystem layout
 # --------------------------------------------------------------------------- #
-BASE_DIR: Path = Path(__file__).resolve().parent.parent
-SCREENSHOTS_DIR: Path = BASE_DIR / "screenshots"
-LOGS_DIR: Path = BASE_DIR / "logs"
-REPORTS_DIR: Path = BASE_DIR / "reports"
+# When frozen by PyInstaller, bundled resources live under sys._MEIPASS and
+# writable output goes next to the executable; in dev both are the project root.
+if getattr(sys, "frozen", False):
+    APP_DIR: Path = Path(sys.executable).resolve().parent
+    RESOURCE_DIR: Path = Path(getattr(sys, "_MEIPASS", APP_DIR))
+else:
+    APP_DIR = RESOURCE_DIR = Path(__file__).resolve().parent.parent
+
+BASE_DIR = APP_DIR
+SCREENSHOTS_DIR = APP_DIR / "screenshots"
+LOGS_DIR = APP_DIR / "logs"
+REPORTS_DIR = APP_DIR / "reports"
+
+
+def resource_path(rel: str) -> Path:
+    """Resolve a bundled resource (e.g. the icon) in dev and frozen builds."""
+    return RESOURCE_DIR / rel
 
 # --------------------------------------------------------------------------- #
 # Domain constants

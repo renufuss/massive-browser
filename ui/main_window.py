@@ -15,7 +15,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QColor, QFont, QPixmap
+from PySide6.QtGui import QColor, QFont, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -46,6 +46,9 @@ from browser.browser_manager import (
 )
 from browser.models import BrowserInstance
 from config.settings import (
+    APP_NAME,
+    APP_VERSION,
+    COPYRIGHT,
     LOGS_DIR,
     MAX_AUTOCLOSE_MINUTES,
     MAX_BROWSERS,
@@ -54,6 +57,7 @@ from config.settings import (
     SCREENSHOTS_DIR,
     RunConfig,
     ensure_directories,
+    resource_path,
 )
 from services.async_runner import AsyncRunner
 from services.logger import LogService
@@ -77,8 +81,11 @@ class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         ensure_directories()
-        self.setWindowTitle("Multi Browser Launcher")
+        self.setWindowTitle(APP_NAME)
         self.resize(1040, 760)
+        icon = resource_path("assets/icon.ico")
+        if icon.exists():
+            self.setWindowIcon(QIcon(str(icon)))
 
         # Services / orchestration --------------------------------------- #
         self._logger = LogService(self)
@@ -114,6 +121,11 @@ class MainWindow(QMainWindow):
         root.addLayout(self._build_button_bar())
         root.addWidget(self._build_dashboard_group(), stretch=3)
         root.addWidget(self._build_log_group(), stretch=2)
+
+        footer = QLabel(f"{COPYRIGHT}  ·  {APP_NAME} v{APP_VERSION}")
+        footer.setAlignment(Qt.AlignmentFlag.AlignRight)
+        footer.setStyleSheet("color: palette(mid); font-size: 11px;")
+        root.addWidget(footer)
 
         self.setCentralWidget(central)
         self.statusBar().showMessage("Idle")

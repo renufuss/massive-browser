@@ -8,6 +8,14 @@ __pycache__/
 venv/
 env/
 
+# PyInstaller / cx_Freeze build output + scratch
+/build/
+/dist/
+/.pyibuild/
+/.iscc_path
+*.manifest
+*.log
+
 # Runtime output — keep the folders (.gitkeep), ignore their contents
 logs/*
 screenshots/*
